@@ -1,6 +1,8 @@
 require('./config/config')
 
 const express = require('express');
+const mongoose = require('mongoose');
+
 const app = express();
 
 const bodyParser = require('body-parser')
@@ -11,39 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-// GET
-app.get('/user', (req, res) => {
-  res.json('Get User!');
-});
+app.use( require('./routes/user') )
 
-// POST
-app.post('/user', (req, res) => {
-  let body = req.body
 
-  if ( body.name === undefined ) {
-    res.status(400).json({
-      ok: false,
-      message: 'El nombre es necesario'
-    })
-  } else {
-    res.json({
-      user: body
-    });
-  }
-
-});
-
-// PUT
-app.put('/user/:id', (req, res) => {
-  let id = req.params.id
-  res.json({
-    id
-  });
-});
-
-// DELETE
-app.delete('/user', (req, res) => {
-  res.json('Delete User!');
+mongoose.connect( process.env.URLDB,
+  { useNewUrlParser: true, useCreateIndex: true },
+  (err, res) => {
+  if (err) throw err
+  console.log('DB Connected')
 });
 
 
