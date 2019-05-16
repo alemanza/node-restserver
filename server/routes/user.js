@@ -2,12 +2,14 @@ const express = require('express')
 const bcrypt = require('bcrypt')
 const _ = require('underscore')
 const User = require('../models/user')
+const { tokenVerification, roleVerification } = require('../middlewares/authentication')
 
 const app = express();
 
 
 // GET
-app.get('/user', (req, res) => {
+app.get('/user', tokenVerification, (req, res) => {
+
   let from = req.query.from || 0
   from = Number(from)
 
@@ -39,7 +41,7 @@ app.get('/user', (req, res) => {
 });
 
 // POST
-app.post('/user', (req, res) => {
+app.post('/user', [tokenVerification, roleVerification], (req, res) => {
   let body = req.body
 
   let user = new User({
@@ -67,7 +69,7 @@ app.post('/user', (req, res) => {
 });
 
 // PUT
-app.put('/user/:id', (req, res) => {
+app.put('/user/:id', [tokenVerification, roleVerification], (req, res) => {
 
   let id = req.params.id
   let body = _.pick( req.body, ['name', 'email', 'img', 'role', 'status'])
@@ -89,7 +91,7 @@ app.put('/user/:id', (req, res) => {
 });
 
 // DELETE
-app.delete('/user/:id', (req, res) => {
+app.delete('/user/:id', [tokenVerification, roleVerification], (req, res) => {
 
   let id = req.params.id
 

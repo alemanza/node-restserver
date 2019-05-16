@@ -26,3 +26,20 @@ if ( process.env.NODE_ENV === 'dev' ) {
 }
 
 process.env.URLDB = urlDB
+
+
+// =========================
+// Expirate Token
+// =========================
+// 60 segundos
+// 60 minutos
+// 24 hs
+// 30 días
+process.env.EXPIRATION_TOKEN = 60 * 60 * 24 * 30
+
+
+// =========================
+// Authentication Seed
+// =========================
+
+process.env.SEED = process.env.SEED || 'development-seed'
